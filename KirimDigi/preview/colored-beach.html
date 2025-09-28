@@ -160,7 +160,7 @@
         <span class="loader"><span class="loader-inner"></span></span>
       </div>
       <!-- music -->
-      <audio id="music" loop="" autoplay="">
+      <audio id="music" loop="">
         <source src="../musics/Yoon-Mirae-instrumental-OST-Part-2.mp3" />
       </audio>
       <!-- end music -->
@@ -1592,6 +1592,26 @@
     <script src="../themes/themes-scroll.js?v=140825"></script>
 
     <script>
+      // Music control function
+      function playMusic() {
+        const music = document.getElementById('music');
+        if (music) {
+          music.play().catch(function(error) {
+            console.log('Audio play failed:', error);
+          });
+        }
+      }
+
+      // Add event listener for open invitation button
+      document.addEventListener('DOMContentLoaded', function() {
+        const openBtn = document.querySelector('.btn-open-invitation');
+        if (openBtn) {
+          openBtn.addEventListener('click', function() {
+            playMusic();
+          });
+        }
+      });
+
       var notSupport = document.getElementById("notSupport");
       function checkBrowser() {
         if (
