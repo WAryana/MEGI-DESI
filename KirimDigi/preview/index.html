@@ -1655,7 +1655,7 @@
           const canvas = document.createElement('canvas');
           const ctx = canvas.getContext('2d');
           canvas.width = 400;
-          canvas.height = 700;
+          canvas.height = 750;
           
           // Background
           ctx.fillStyle = '#ffffff';
@@ -1699,19 +1699,32 @@
             const svgUrl = URL.createObjectURL(svgBlob);
             
             qrImg.onload = function() {
+              // Add couple names below photo, above QR code
+              ctx.fillStyle = '#333333';
+              ctx.font = 'bold 24px Arial';
+              ctx.textAlign = 'center';
+              ctx.fillText('Desi & Megi', canvas.width/2, 320);
+              
               // QR code positioned in middle section
               ctx.drawImage(qrImg, 110, 340, 180, 180);
+              
+              // Add instruction text
+              ctx.fillStyle = '#333333';
+              ctx.font = '14px Arial';
+              ctx.textAlign = 'center';
+              ctx.fillText('Tunjukan kartu undangan ini', canvas.width/2, 540);
+              ctx.fillText('saat menghadiri undangan', canvas.width/2, 560);
               
               // Add guest name text in bottom section
               ctx.fillStyle = '#666666';
               ctx.font = 'bold 18px Arial';
               ctx.textAlign = 'center';
-              ctx.fillText('Nama', canvas.width/2, 560);
+              ctx.fillText('Nama', canvas.width/2, 590);
               
               ctx.fillStyle = '#333333';
               ctx.font = 'bold 22px Arial';
               const guestName = document.getElementById('qrGuestName').textContent;
-              ctx.fillText(guestName, canvas.width/2, 590);
+              ctx.fillText(guestName, canvas.width/2, 620);
               
               // Download
               canvas.toBlob(function(blob) {
