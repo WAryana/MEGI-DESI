@@ -1805,8 +1805,17 @@
       document.addEventListener('DOMContentLoaded', function() {
         // Dynamic Guest Name from URL Parameter
         function updateGuestName() {
+          let guestName = null;
+          
+          // Try to get from query parameters first (?to=)
           const urlParams = new URLSearchParams(window.location.search);
-          let guestName = urlParams.get('to');
+          guestName = urlParams.get('to');
+          
+          // If not found in query params, try hash parameters (#to=)
+          if (!guestName && window.location.hash) {
+            const hashParams = new URLSearchParams(window.location.hash.substring(1));
+            guestName = hashParams.get('to');
+          }
 
           // If there's a guest name in URL, replace all placeholders
           if (guestName) {
