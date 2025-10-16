@@ -1804,48 +1804,55 @@
       // RSVP Form Functions
       document.addEventListener('DOMContentLoaded', function() {
         // Dynamic Guest Name from URL Parameter
-        const urlParams = new URLSearchParams(window.location.search);
-        let guestName = urlParams.get('to');
+        function updateGuestName() {
+          const urlParams = new URLSearchParams(window.location.search);
+          let guestName = urlParams.get('to');
 
-        // If there's a guest name in URL, replace all placeholders
-        if (guestName) {
-          // Replace spaces from URL format (%20 or +) with normal spaces
-          guestName = decodeURIComponent(guestName.replace(/\+/g, ' '));
+          // If there's a guest name in URL, replace all placeholders
+          if (guestName) {
+            // Replace spaces from URL format (%20 or +) with normal spaces
+            guestName = decodeURIComponent(guestName.replace(/\+/g, ' '));
 
-          // Replace "Nama Tamu" text in all parts of the invitation
-          const elementsToUpdate = document.querySelectorAll('*');
-          elementsToUpdate.forEach(function(element) {
-            // Skip script and style elements
-            if (element.tagName === 'SCRIPT' || element.tagName === 'STYLE') return;
-            
-            // Update text content if it contains "Nama Tamu"
-            if (element.childNodes.length > 0) {
-              element.childNodes.forEach(function(node) {
-                if (node.nodeType === Node.TEXT_NODE && node.textContent.includes('Nama Tamu')) {
-                  node.textContent = node.textContent.replace(/Nama Tamu/g, guestName);
-                }
-              });
+            // Update specific elements with ID first
+            const guestNameSlot = document.getElementById('guestNameSlot');
+            if (guestNameSlot) {
+              guestNameSlot.textContent = guestName;
             }
-          });
 
-          // Update specific elements with ID
-          const guestNameSlot = document.getElementById('guestNameSlot');
-          if (guestNameSlot) {
-            guestNameSlot.textContent = guestName;
-          }
+            // Replace "Nama Tamu" text in all parts of the invitation
+            const elementsToUpdate = document.querySelectorAll('*');
+            elementsToUpdate.forEach(function(element) {
+              // Skip script and style elements
+              if (element.tagName === 'SCRIPT' || element.tagName === 'STYLE') return;
+              
+              // Update text content if it contains "Nama Tamu"
+              if (element.childNodes.length > 0) {
+                element.childNodes.forEach(function(node) {
+                  if (node.nodeType === Node.TEXT_NODE && node.textContent.includes('Nama Tamu')) {
+                    node.textContent = node.textContent.replace(/Nama Tamu/g, guestName);
+                  }
+                });
+              }
+            });
 
-          // Update data attribute
-          const satuMomen = document.getElementById('satuMomen');
-          if (satuMomen) {
-            satuMomen.setAttribute('data-guest', guestName);
-          }
+            // Update data attribute
+            const satuMomen = document.getElementById('satuMomen');
+            if (satuMomen) {
+              satuMomen.setAttribute('data-guest', guestName);
+            }
 
-          // Pre-fill RSVP form with guest name
-          const guestNameInput = document.getElementById('guestName');
-          if (guestNameInput) {
-            guestNameInput.value = guestName;
+            // Pre-fill RSVP form with guest name
+            const guestNameInput = document.getElementById('guestName');
+            if (guestNameInput) {
+              guestNameInput.value = guestName;
+            }
           }
         }
+
+        // Call immediately and also after a short delay to ensure all elements are loaded
+        updateGuestName();
+        setTimeout(updateGuestName, 100);
+        setTimeout(updateGuestName, 500);
         
         // Show/hide guest count based on attendance
         const attendYes = document.getElementById('attendYes');
